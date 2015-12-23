@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Rival Rockets Benchmarks{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
+</div>
+<h3>Recent Machines</h3>
+{% include '_machines.html' %}
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+<div>
+    {% if current_user.can(Permission.CREATE_MACHINE_DATA) %}
+    <a href="{{url_for('.new_machine') }}">Create a New Machine to Benchmark</a>
+    {% endif %}
+</div>
+{% endblock %}
+

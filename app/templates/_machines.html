@@ -1,0 +1,40 @@
+<ul class="machines">
+    {% for machine in machines %}
+    <li class="machine">
+        <div class="machine-thumbnail">
+            <a href="{{ url_for('.user', username=machine.author.username) }}">
+                <img class="img-rounded profile-thumbnail" src="{{ machine.author.gravatar(size=40) }}">
+            </a>
+        </div>
+        <div class="machine-content">
+            <div class="machine-date">{{ moment(machine.timestamp).fromNow() }}</div>
+            <div class="machine-author"><a href="{{ url_for('.user', username=machine.author.username) }}">{{ machine.author.username }}</a></div>
+            <div class="machine-name">{{ machine.system_name }}</div>
+            <div class="machine-notes">
+                {% if machine.system_notes_html %}
+                    {{ machine.system_notes_html | safe }}
+                {% else %}
+                    {{ machine.system_notes }}
+                {% endif %}
+            </div>
+            <div class="machine-footer">
+                {% if current_user == machine.author %}
+                <a href="{{ url_for('.edit', id=machine.id) }}">
+                    <span class="label label-primary">Edit</span>
+                </a>
+                {% elif current_user.is_administrator() %}
+                <a href="{{ url_for('.edit', id=machine.id) }}">
+                    <span class="label label-danger">Edit [Admin]</span>
+                </a>
+                {% endif %}
+                <a href="{{ url_for('.machine', id=machine.id) }}">
+                    <span class="label label-default">Permalink</span>
+                </a>
+                <a href="{{ url_for('.machine', id=machine.id) }}#comments">
+                    <span class="label label-primary">{{ machine.comments.count() }} Comments</span>
+                </a>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
