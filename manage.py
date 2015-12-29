@@ -29,9 +29,6 @@ def deploy():
     # create user roles
     Role.insert_roles()
 
-    # create self-follows for all users
-    User.add_self_follows()
-
 
 if __name__ == '__main__':
     manager.run()
